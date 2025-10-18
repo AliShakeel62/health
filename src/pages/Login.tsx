@@ -36,7 +36,7 @@ const Login = () => {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
-          <div className="glass rounded-2xl p-8 shadow-xl">
+          <div className=" mt-8 glass rounded-2xl p-8 shadow-xl">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 Welcome Back
@@ -47,7 +47,7 @@ const Login = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div className="space-y-4">
+              <div className="py-4 ">
                 <Input
                   type="email"
                   placeholder="Enter your email"
@@ -57,7 +57,7 @@ const Login = () => {
                   required
                 />
                 
-                <div className="relative">
+                <div className="relative py-3">
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"

@@ -27,23 +27,28 @@ const ReportCard = ({ id, title, date, type, status }: ReportCardProps) => {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 
+                 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="p-5">
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mr-3">
+        {/* ✅ Fixed layout header */}
+        <div className="flex justify-between items-start mb-3 gap-2">
+          {/* Left: icon + title */}
+          <div className="flex items-start min-w-0">
+            <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mr-3 flex-shrink-0">
               <FiFile className="text-blue-600 dark:text-blue-400" />
             </div>
-            <div>
-              <h3 className="font-semibold text-slate-900 dark:text-white truncate max-w-[180px]">
+            <div className="min-w-0">
+              <h3 className="font-semibold text-slate-900 dark:text-white text-sm truncate max-w-[160px] sm:max-w-[180px]">
                 {title}
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400">{type}</p>
             </div>
           </div>
+
+          {/* Right: status badge (always fixed top-right) */}
           <span
-            className={`text-xs px-2 py-1 rounded-full ${statusColors[status]}`}
+            className={`text-xs px-2 py-1 rounded-full whitespace-nowrap flex-shrink-0 ${statusColors[status]}`}
           >
             {statusText[status]}
           </span>

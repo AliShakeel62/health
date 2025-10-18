@@ -45,7 +45,7 @@ const Signup = () => {
           transition={{ duration: 0.5 }}
           className="w-full max-w-md"
         >
-          <div className="glass rounded-2xl p-8 shadow-xl">
+          <div className="mt-8 glass rounded-2xl p-7 shadow-xl">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 Create Account
@@ -64,6 +64,8 @@ const Signup = () => {
                   onChange={(e) => setName(e.target.value)}
                   icon={<FiUser />}
                   required
+                  className='my-2'
+
                 />
                 
                 <Input
@@ -73,6 +75,8 @@ const Signup = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   icon={<FiMail />}
                   required
+                  className='my-2'
+                  
                 />
                 
                 <div className="relative">
@@ -83,6 +87,7 @@ const Signup = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     icon={<FiLock />}
                     required
+                    className='my-2'
                   />
                   <button
                     type="button"
@@ -101,6 +106,7 @@ const Signup = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     icon={<FiLock />}
                     required
+                    className='my-2'
                   />
                   <button
                     type="button"
@@ -111,12 +117,13 @@ const Signup = () => {
                   </button>
                 </div>
 
-                <div className="flex items-start">
+                <div className="flex items-start py-2">
                   <label className="flex items-start text-sm text-slate-600 dark:text-slate-300">
                     <input
                       type="checkbox"
                       className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:bg-slate-800 dark:border-slate-600 mt-0.5"
                       required
+                      
                     />
                     <span className="ml-2">
                       I agree to the{' '}

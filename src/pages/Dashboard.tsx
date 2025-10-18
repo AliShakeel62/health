@@ -115,7 +115,7 @@ const Dashboard = () => {
           </div>
 
           {/* Reports Section */}
-          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm mb-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-10 border border-slate-200 dark:border-slate-700 shadow-sm mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                 Recent Reports
@@ -128,18 +128,21 @@ const Dashboard = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {reports.map((report, index) => (
-                <motion.div
-                  key={report.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.2 }}
-                >
-                  <ReportCard {...report} />
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {reports.map((report, index) => (
+    <motion.div
+      key={report.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 + 0.2 }}
+      className="min-h-[220px] max-h-[220px] min-w-[300px] max-w-[300px] 
+                 flex justify-center items-center mx-auto"
+    >
+      <ReportCard {...report} />
+    </motion.div>
+  ))}
+</div>
+
 
             <div className="mt-6 text-center">
               <Link

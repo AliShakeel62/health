@@ -170,11 +170,11 @@ const Landing = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
             <div className="flex flex-col items-center md:items-start">
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="flex items-center space-x-3 mb-4 ">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-emerald-500 flex items-center justify-center">
                   <span className="text-white font-bold text-xl">M</span>
                 </div>
-                <span className="text-xl font-bold text-white">MediAI</span>
+                <span className="text-xl font-bold text-white p-3">MediAI</span>
               </div>
               <p className="text-sm text-center md:text-left max-w-xs">
                 Making health reports understandable for everyone.
