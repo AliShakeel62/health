@@ -14,16 +14,45 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/login',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Backend se error message
       setIsLoading(false);
-      navigate('/dashboard');
-    }, 1500);
-  };
+      alert(data.message || 'Login failed');
+      return;
+    }
+
+    // Successful login
+    const { token, user } = data;
+
+    // Token aur user ko localStorage me save karo
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    setIsLoading(false);
+
+    // Redirect to dashboard
+    navigate('/dashboard');
+  } catch (error) {
+    setIsLoading(false);
+    alert('Server Error');
+    console.error(error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-emerald-50 dark:from-slate-900 dark:to-slate-800">

@@ -17,21 +17,49 @@ const Signup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       alert("Passwords don't match");
       return;
     }
-    
+
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setIsLoading(false);
+        alert(data.message || 'Signup failed');
+        return;
+      }
+
+      // Success: token aur user receive hua
+      const { token, user } = data;
+
+      // Store in localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+
       setIsLoading(false);
+
+      // Redirect to dashboard
       navigate('/dashboard');
-    }, 1500);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      alert('Server Error');
+    }
   };
 
   return (

@@ -32,34 +32,65 @@ const UploadReport = () => {
     setFile(selectedFile);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!file || !reportType) {
-      alert('Please select a file and report type');
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!file || !reportType) {
+    alert('Please select a file and report type');
+    return;
+  }
+
+  setIsUploading(true);
+  setUploadProgress(0);
+
+  try {
+    const formData = new FormData();
+    formData.append("report", file);
+    formData.append("reportType", reportType);
+  const token = localStorage.getItem("token");
+
+const response = await fetch("http://localhost:5000/api/report/upload", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+  body: formData,
+});
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setIsUploading(false);
+      alert(data.message || "Upload failed");
       return;
     }
-    
-    setIsUploading(true);
-    
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => {
-            setIsUploading(false);
-            setIsSuccess(true);
-            setTimeout(() => {
-              navigate('/dashboard');
-            }, 2000);
-          }, 500);
-          return 100;
-        }
-        return prev + 10;
+
+    // Success
+    setUploadProgress(100);
+    setTimeout(() => {
+      setIsUploading(false);
+      setIsSuccess(true);
+
+      // Agar AI analysis backend call karni ho
+      fetch("http://localhost:5000/api/report/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: data.url, reportType })
+      }).then(res => res.json()).then(aiData => {
+        console.log("AI Analysis:", aiData);
       });
-    }, 200);
-  };
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    }, 500);
+
+  } catch (error) {
+    console.error(error);
+    setIsUploading(false);
+    alert("Server Error");
+  }
+};
 
   const resetForm = () => {
     setFile(null);

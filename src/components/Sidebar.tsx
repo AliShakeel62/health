@@ -20,7 +20,7 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: FiHome, path: '/dashboard' },
     { name: 'Upload Report', icon: FiUpload, path: '/upload' },
-    { name: 'Reports', icon: FiFileText, path: '/reports' },
+    { name: 'Reports', icon: FiFileText, path: '/report' },
     { name: 'Timeline', icon: FiClock, path: '/timeline' },
     { name: 'Profile', icon: FiUser, path: '/profile' },
   ];
