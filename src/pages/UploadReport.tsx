@@ -32,11 +32,17 @@ const UploadReport = () => {
     setFile(selectedFile);
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   if (!file || !reportType) {
-    alert('Please select a file and report type');
+    alert("Please select a file and report type");
+    return;
+  }
+
+  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+  if (!allowedTypes.includes(file.type)) {
+    alert("Only JPG, PNG, or PDF files are allowed");
     return;
   }
 
@@ -44,18 +50,50 @@ const UploadReport = () => {
   setUploadProgress(0);
 
   try {
-    const formData = new FormData();
-    formData.append("report", file);
-    formData.append("reportType", reportType);
-  const token = localStorage.getItem("token");
+    // 1️⃣ Upload file to Cloudinary first
+    const cloudForm = new FormData();
+    cloudForm.append("file", file);
+    cloudForm.append("upload_preset", "unsigned_upload"); // ⚠️ Replace with your Cloudinary preset name
 
-const response = await fetch("http://localhost:5000/api/report/upload", {
-  method: "POST",
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-  body: formData,
-});
+    const cloudRes = await fetch(
+      `https://api.cloudinary.com/v1_1/duxpmcpw0/auto/upload`, // ⚠️ Replace with your Cloudinary cloud name
+      {
+        method: "POST",
+        body: cloudForm,
+      }
+    );
+
+    const cloudData = await cloudRes.json(); // ✅ define here
+
+    if (!cloudData.secure_url) {
+      console.error("Cloudinary upload failed:", cloudData);
+      alert("Cloudinary upload failed!");
+      setIsUploading(false);
+      return;
+    }
+
+    // 2️⃣ Now send the Cloudinary URL to your backend
+    const formData = new FormData();
+    formData.append("fileUrl", cloudData.secure_url); // ✅ now defined properly
+    formData.append("reportType", reportType);
+
+    const token = localStorage.getItem("token");
+
+   const response = await fetch(
+  "https://health-mate-backend-zeta.vercel.app/api/image/upload",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      fileUrl: cloudData.secure_url,
+      reportType,
+    }),
+  }
+);
+
 
     const data = await response.json();
 
@@ -65,32 +103,41 @@ const response = await fetch("http://localhost:5000/api/report/upload", {
       return;
     }
 
-    // Success
+    console.log("✅ Upload Success:", data);
+
     setUploadProgress(100);
-    setTimeout(() => {
+
+    // 🔥 Optional AI Analysis Call
+    setTimeout(async () => {
       setIsUploading(false);
       setIsSuccess(true);
 
-      // Agar AI analysis backend call karni ho
-      fetch("http://localhost:5000/api/report/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: data.url, reportType })
-      }).then(res => res.json()).then(aiData => {
-        console.log("AI Analysis:", aiData);
-      });
+      const aiResponse = await fetch(
+        "https://health-mate-backend-zeta.vercel.app/api/report/analyze",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ reportId: data.reportId }),
+        }
+      );
+
+      const aiData = await aiResponse.json();
+      console.log("🤖 AI Result:", aiData);
 
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 2000);
+        navigate(`/viewreport/${data.reportId}`);
+      }, 1000);
     }, 500);
-
   } catch (error) {
-    console.error(error);
+    console.error("Upload error:", error);
     setIsUploading(false);
     alert("Server Error");
   }
 };
+
 
   const resetForm = () => {
     setFile(null);
