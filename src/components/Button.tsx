@@ -1,37 +1,39 @@
-// src/components/Button.tsx
-import { motion } from 'framer-motion';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../lib/utils';
+import { motion, type HTMLMotionProps } from "framer-motion";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../lib/utils";
 
+// Define all button style variants
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
+  "inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
   {
     variants: {
       variant: {
-        default: 'bg-blue-600 text-white hover:bg-blue-700',
+        default: "bg-blue-600 text-white hover:bg-blue-700",
         secondary:
-          'bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700',
+          "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
         outline:
-          'border border-slate-300 bg-transparent text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800',
-        ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
-        danger: 'bg-red-600 text-white hover:bg-red-700',
+          "border border-slate-300 bg-transparent text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800",
+        ghost:
+          "bg-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800",
+        danger: "bg-red-600 text-white hover:bg-red-700",
       },
       size: {
-        default: 'h-10 px-6 py-2.5',
-        sm: 'h-9 px-4 py-2 rounded-md',
-        lg: 'h-12 px-8 py-3 text-base',
-        icon: 'h-10 w-10',
+        default: "h-10 px-6 py-2.5",
+        sm: "h-9 px-4 py-2 rounded-md",
+        lg: "h-12 px-8 py-3 text-base",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: "default",
+      size: "default",
     },
   }
 );
 
+// ✅ Fix type conflict by using HTMLMotionProps for <button>
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends Omit<HTMLMotionProps<"button">, "ref">,
     VariantProps<typeof buttonVariants> {
   loading?: boolean;
 }
@@ -40,16 +42,17 @@ const Button = ({
   className,
   variant,
   size,
-  loading,
+  loading = false,
   children,
+  disabled,
   ...props
 }: ButtonProps) => {
   return (
     <motion.button
-      whileHover={{ scale: loading ? 1 : 1.02 }}
-      whileTap={{ scale: loading ? 1 : 0.98 }}
-      className={`p-4 ${cn(buttonVariants({ variant, size, className }))}`}
-      disabled={loading || props.disabled}
+      whileHover={!loading ? { scale: 1.02 } : {}}
+      whileTap={!loading ? { scale: 0.98 } : {}}
+      disabled={loading || disabled}
+      className={cn("p-4", buttonVariants({ variant, size, className }))}
       {...props}
     >
       {loading ? (

@@ -7,7 +7,7 @@ import Sidebar from '../components/Sidebar';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import { FaWeight } from 'react-icons/fa';
-import { FiHeart, FiActivity, FiClock, FiArrowLeft } from 'react-icons/fi';
+import { FiHeart, FiActivity, FiArrowLeft } from 'react-icons/fi';
 
 const AddVitals = () => {
   const [systolic, setSystolic] = useState('');

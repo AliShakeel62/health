@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Timeline from '../components/Timeline';
 import Button from '../components/Button';
-import { FiFilter, FiCalendar, FiArrowLeft } from 'react-icons/fi';
+import {  FiCalendar, FiArrowLeft } from 'react-icons/fi';
 
 const TimelinePage = () => {
   const [filter, setFilter] = useState('all');

@@ -1,5 +1,6 @@
 // src/components/Loader.tsx
 import { motion } from 'framer-motion';
+import { cn } from '../lib/utils';
 
 const Loader = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {

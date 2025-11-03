@@ -6,7 +6,6 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import UploadBox from '../components/UploadBox';
 import Button from '../components/Button';
-import Input from '../components/Input';
 import { FiCheck, FiArrowLeft } from 'react-icons/fi';
 
 const UploadReport = () => {
