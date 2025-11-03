@@ -1,5 +1,4 @@
 // src/pages/Dashboard.tsx
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -9,7 +8,7 @@ import Button from '../components/Button';
 import { FiPlus, FiActivity, FiBarChart2, FiClock } from 'react-icons/fi';
 
 const Dashboard = () => {
-  const [reports, setReports] = useState([
+  const reports = [
     {
       id: '1',
       title: 'Blood Test Results',
@@ -38,7 +37,7 @@ const Dashboard = () => {
       type: 'Blood Test',
       status: 'analyzed' as const,
     },
-  ]);
+  ];
 
   const stats = [
     {
